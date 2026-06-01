@@ -1,5 +1,5 @@
 dashboardPage(
-  dashboardHeader(disable=T),
+  dashboardHeader(title = "🌦️ Weather Dashboard"),
   dashboardSidebar(disable=T),
   
   dashboardBody(
@@ -10,17 +10,31 @@ dashboardPage(
     ),
                theme = shinytheme("paper"),
                windowTitle = "Weather Dashboard",
-               actionButton("update","Update Data"),
+    
+    # عنوان المدينة
+    fluidRow(
+      column(width = 12, align = "center",
+             h2(strong("Weather in Riyadh City 🏙️"), 
+                style = "color: #2c3e50; margin-top: 20px; margin-bottom: 20px;")
+      )
+    ),
+    
                fluidRow(
+                 column(width = 3, align = "center", uiOutput("weathericon"),
+                        h3(textOutput("weather_desc"))),
                  valueBoxOutput("temp",3),
                  valueBoxOutput("humidity",3),
                  valueBoxOutput("wind",3),
-                 valueBoxOutput("weather",3),
                ),
-               fluidRow(
-                 plotlyOutput("templot")
-               ),
+    
     hr(),
+    
+               fluidRow(
+                 plotlyOutput("tempPlot")
+               ),
+    
+    hr(),
+    
     fluidRow(
       column(width = 1,align = "right", offset = 4,
              tags$a(img(src = "GitHub.png",style = "width:30%;height:30%;"),href = "https://github.com/0abdullah0sami0", target="_blank")),
