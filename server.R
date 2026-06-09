@@ -1,10 +1,9 @@
 server <- function(input, output, session) {
   
+  ################## Riyadh server ###################
+  
   updatedata <- reactive({
-    url <- paste0("https://api.openweathermap.org/data/2.5/weather?q=", city,
-                  "&appid=", apikey, "&units=metric")
-    weatherRiyadh <- fromJSON(content(GET(url),"text"), flatten = TRUE)
-    print(weatherRiyadh)
+    Weather_today(city,apikey,metric = "metric")
   })
   
   weather_data <- reactive({
@@ -50,7 +49,9 @@ server <- function(input, output, session) {
       scale_x_datetime(date_labels = "%a %H:%M") +
       
       labs(
-        title = "🌤️ Temperature forecast in Riyadh",
+        title = "🌤️ Temperature forecast",
+        
+      
         x = "Time",
         y = "Temperature (°C)",
         color = "Temperature"
@@ -69,4 +70,16 @@ server <- function(input, output, session) {
      )
   
   })
+  
+  ################## Other cities ###################
+  
+  updatedata_city <- reactive({
+    Weather_today(city = input$city ,apikey,metric = "metric")
+  })
+  
+  weather_data_city <- reactive({
+    invalidateLater(600000, session)  # تحديث كل 10 دقائق
+    get_weather(city = input$city ,apikey)
+  })
+  
 }

@@ -1,6 +1,49 @@
 dashboardPage(
   dashboardHeader(title = "🌦️ Weather Dashboard"),
-  dashboardSidebar(disable=T),
+  dashboardSidebar(
+    
+    conditionalPanel(
+      condition = "input.tabs == 'Other Cities'",
+      
+      textInput(
+        "city",
+        "City Name",
+        value = "Jeddah"
+      ),
+      
+      sliderInput(
+        "days",
+        "Days",
+        min = 1,
+        max = 5,
+        value = 5
+      ),
+      
+      radioButtons(
+        "units",
+        "Temperature Unit",
+        choices = c(
+          "Celsius" = "metric",
+          "Fahrenheit" = "imperial"
+        )
+      ),
+      
+      checkboxInput(
+        "show_avg",
+        "Show Average Line",
+        TRUE
+      ),
+      selectInput(
+        "chart_type",
+        "Chart Type",
+        choices = c(
+          "Line",
+          "Line + Points"
+        )
+      )
+    )
+    
+  ),
   
   dashboardBody(
     # set background to white
@@ -11,28 +54,38 @@ dashboardPage(
                theme = shinytheme("paper"),
                windowTitle = "Weather Dashboard",
     
-    # عنوان المدينة
-    fluidRow(
-      column(width = 12, align = "center",
-             h2(strong("Weather in Riyadh City 🏙️"), 
-                style = "color: #2c3e50; margin-top: 20px; margin-bottom: 20px;")
-      )
-    ),
-    
-               fluidRow(
-                 column(width = 3, align = "center", uiOutput("weathericon"),
-                        h3(textOutput("weather_desc"))),
-                 valueBoxOutput("temp",3),
-                 valueBoxOutput("humidity",3),
-                 valueBoxOutput("wind",3),
-               ),
-    
-    hr(),
-    
-               fluidRow(
-                 plotlyOutput("tempPlot")
-               ),
-    
+    tabsetPanel(
+      id = "tabs",
+      
+      tabPanel(
+        "Riyadh",
+        # عنوان المدينة
+        fluidRow(
+          column(width = 12, align = "center",
+                 h2(strong("Weather in Riyadh City 🏙️"), 
+                    style = "color: #2c3e50; margin-top: 20px; margin-bottom: 20px;")
+          )
+        ),
+        
+        fluidRow(
+          column(width = 3, align = "center", uiOutput("weathericon"),
+                 h3(textOutput("weather_desc"))),
+          valueBoxOutput("temp",3),
+          valueBoxOutput("humidity",3),
+          valueBoxOutput("wind",3),
+        ),
+        
+        hr(),
+        
+        fluidRow(
+          plotlyOutput("tempPlot")
+        ),
+      ),
+      
+      tabPanel(
+        "Other Cities",
+        h2("Other Cities")
+      )),
     hr(),
     
     fluidRow(
