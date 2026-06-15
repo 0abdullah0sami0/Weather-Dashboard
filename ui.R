@@ -5,15 +5,19 @@ dashboardPage(
     conditionalPanel(
       condition = "input.tabs == 'Other Cities'",
       
-      textInput(
-        "city",
-        "City Name",
-        value = "Jeddah"
-      ),
+      selectInput("city",
+                  "City Name",
+                  c("London","Jeddah","New York","Paris","Tokyo","Sydney")),
+      
+      # textInput(
+      #   "city",
+      #   "City Name",
+      #   value = Jeddah
+      # ),
       
       sliderInput(
         "days",
-        "Days",
+        "Forecast Days",
         min = 1,
         max = 5,
         value = 5
@@ -33,6 +37,7 @@ dashboardPage(
         "Show Average Line",
         TRUE
       ),
+      
       selectInput(
         "chart_type",
         "Chart Type",
@@ -42,7 +47,6 @@ dashboardPage(
         )
       )
     )
-    
   ),
   
   dashboardBody(
@@ -84,7 +88,29 @@ dashboardPage(
       
       tabPanel(
         "Other Cities",
-        h2("Other Cities")
+        # h2("Other Cities"),
+        
+        fluidRow(
+          column(width = 12, align = "center",
+                 h2(strong("Weather in Selected City 🏙️"), 
+                    style = "color: #2c3e50; margin-top: 20px; margin-bottom: 20px;")
+          )
+        ),
+        
+        fluidRow(
+          column(width = 3, align = "center", uiOutput("weathericon_City"),
+                 h3(textOutput("weather_desc_City"))),
+          valueBoxOutput("temp_City",3),
+          valueBoxOutput("humidity_City",3),
+          valueBoxOutput("wind_City",3),
+        ),
+        
+        hr(),
+        
+        fluidRow(
+          plotlyOutput("tempPlot_City")
+        )
+        
       )),
     hr(),
     

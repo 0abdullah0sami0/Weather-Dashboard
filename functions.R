@@ -19,3 +19,18 @@ get_weather <- function(city,apikey) {
   return(df)
 }
 
+# Reading weather data
+Weather_today <- function(city,apikey,metric) {
+  url <- paste0("https://api.openweathermap.org/data/2.5/weather?q=", city,
+                       "&appid=", apikey, "&units=",metric)
+  
+  weather_data <- fromJSON(content(GET(url),"text"), flatten = TRUE)
+  
+  print(weather_data)
+  
+  return(weather_data)
+}
+
+
+
+
